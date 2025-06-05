@@ -72,5 +72,5 @@ def like_create(request,post_id):
         )
 
     like = Like.objects.create(post=post,user=request.user)
-    serialer = LikeSerializer(like)
-    return Response(serialer.data,status=status.HTTP_201_CREATED)
+    serializer = LikeSerializer(like)
+    return Response(serializer.data,status=status.HTTP_201_CREATED)
