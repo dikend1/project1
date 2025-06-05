@@ -23,7 +23,7 @@ def post_list_create(request):
             serializer.save()
             return Response(serializer.data,status=status.HTTP_201_CREATED)
         return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
-
+    return None
 
 
 @api_view(['GET','PUT','DELETE'])
@@ -44,6 +44,7 @@ def post_detail(request,pk):
     elif request.method == 'DELETE':
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    return None
 
 
 # Comments
