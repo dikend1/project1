@@ -1,4 +1,5 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework import status
 from django.contrib.auth.models import User
@@ -8,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 
 # register
 @api_view(['POST'])
+@permission_classes([AllowAny])
 def register_user(request):
     serializer = UserSerializer(data=request.data)
     if serializer.is_valid():
@@ -28,10 +30,10 @@ def register_user(request):
 @api_view(['POST'])
 def login_user(request):
     token_view = TokenObtainPairView.as_view()
-    response = token_view(request)
+    response = token_view(request._request)
 
     if response.status_code == status.HTTP_200_OK:
-        user = User.objects.get(username=response.data['username'])
+        user = User.objects.get(username=response.data.get('username'))
         user_data = UserSerializer(user).data
         response.data['user'] = user_data
     return Response(response.data, status=response.status_code)
